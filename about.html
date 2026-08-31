@@ -349,274 +349,512 @@
       </div>
     </div>
   </section>
-  <!-- LEADERSHIP -->
   <style>
-    .leadership { padding: 8rem 0; background: var(--clr-dark-green); }
-    .leader-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 4rem; }
-    .leader-card {
-      background: var(--glass-dark);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
-      padding: 2.5rem;
-      border-radius: 16px;
-      border-bottom: 3px solid rgba(251,191,36,0.3);
-      transition: all 0.4s ease;
+    /* ─── SECTION SHELL ─────────────────────────────── */
+    .leadership { padding: 8rem 0 6rem; background: var(--clr-dark-green); position: relative; }
+
+    /* ─── CANVAS — all tiers & connectors sit here ─── */
+    .org-canvas {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      box-sizing: border-box;
+    }
+
+    /* ─── LEGEND ─────────────────────────────────────── */
+    .org-legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .org-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .org-legend-line {
+      width: 40px;
+      height: 2px;
+    }
+    .org-legend-line.solid   { background: #22c55e; }
+    .org-legend-line.dashed  { border-top: 2px dashed rgba(251,191,36,0.55); background: transparent; }
+    .org-legend-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 700;
+    }
+
+    /* ─── ORG NODE CARDS ─────────────────────────────── */
+    .org-node {
+      background: rgba(8, 18, 12, 0.82);
+      border: 1px solid rgba(34, 197, 94, 0.18);
+      border-bottom: 3px solid rgba(34, 197, 94, 0.4);
+      border-radius: 12px;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
       display: flex;
       flex-direction: column;
-      text-align: left;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+      backdrop-filter: blur(14px);
+      height: 100%;
     }
-    .leader-card:hover { transform: translateY(-6px); border-bottom-color: var(--clr-yellow); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .leader-card.featured {
-      grid-column: span 2;
-      border: 1px solid rgba(251,191,36,0.4);
+    .org-node:hover {
+      transform: translateY(-4px);
+      border-color: rgba(34, 197, 94, 0.45);
+      border-bottom-color: #22c55e;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
+    }
+    .org-node.featured {
+      border-color: rgba(251, 191, 36, 0.35);
       border-bottom: 3px solid var(--clr-yellow);
-      background: linear-gradient(135deg, rgba(15,28,22,0.95), rgba(251,191,36,0.05));
+      background: linear-gradient(145deg, rgba(8, 18, 12, 0.95), rgba(251, 191, 36, 0.05));
+      box-shadow: 0 0 45px rgba(251, 191, 36, 0.07), 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .org-node.featured:hover {
+      border-color: rgba(251, 191, 36, 0.6);
+      box-shadow: 0 0 55px rgba(251, 191, 36, 0.13), 0 16px 36px rgba(0,0,0,0.55);
+    }
+    .org-node.advisory {
+      border-color: rgba(96, 165, 250, 0.18);
+      border-bottom-color: rgba(96, 165, 250, 0.35);
+      background: rgba(8, 18, 12, 0.72);
+    }
+    .org-node.advisory:hover {
+      border-color: rgba(96, 165, 250, 0.45);
+      border-bottom-color: #60a5fa;
+    }
+
+    /* Badges */
+    .org-badge {
+      font-size: 0.54rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      padding: 0.18rem 0.55rem;
+      border-radius: 3px;
+      margin-bottom: 0.8rem;
+    }
+    .org-node.featured  .org-badge { background: rgba(251,191,36,0.12); color: var(--clr-yellow); border: 1px solid rgba(251,191,36,0.3); }
+    .org-node.advisory  .org-badge { background: rgba(96,165,250,0.08); color: #93c5fd; border: 1px solid rgba(96,165,250,0.2); }
+    .org-node           .org-badge { background: rgba(34,197,94,0.08);  color: #4ade80;  border: 1px solid rgba(34,197,94,0.2); }
+
+    /* Icons */
+    .org-icon {
+      width: 40px; height: 40px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.8rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.3s ease;
+    }
+    .org-node.featured  .org-icon { color: var(--clr-yellow); background: rgba(251,191,36,0.07); border-color: rgba(251,191,36,0.18); }
+    .org-node.advisory  .org-icon { color: #93c5fd;           background: rgba(96,165,250,0.06);  border-color: rgba(96,165,250,0.15); }
+    .org-node           .org-icon { color: #4ade80;            background: rgba(34,197,94,0.06);   border-color: rgba(34,197,94,0.15); }
+    .org-node:hover .org-icon { transform: scale(1.1); }
+
+    /* Text */
+    .org-node h4 {
+      font-size: 0.9rem; font-weight: 700; color: #fff;
+      margin: 0 0 0.45rem; line-height: 1.3; font-family: var(--font-heading);
+    }
+    .org-node.featured h4 { font-size: 1.05rem; }
+    .org-node p {
+      font-size: 0.67rem; line-height: 1.55;
+      color: rgba(255,255,255,0.42); margin: 0;
+    }
+    .org-tags {
+      display: flex; flex-wrap: wrap; gap: 0.28rem;
+      justify-content: center; margin-top: auto; padding-top: 0.85rem;
+    }
+    .org-tag {
+      font-size: 0.46rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 0.1rem 0.38rem; border-radius: 3px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.33);
+    }
+
+    /* ─── TIER 1: 3-section flex (advisory | dash | FOUNDER | dash | advisory) ─ */
+    .tier1-wrap {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 0;
+      margin-top: 3rem;
+    }
+    .tier1-side {
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tier1-side.right-side {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+    .tier1-side .org-node { width: 100%; }
+    .tier1-center {
+      flex: 0 0 300px;
+    }
+    .tier1-center .org-node.featured { width: 100%; }
+    .tier1-dash {
+      flex: 0 0 20px;
+      height: 2px;
+      border-top: 2px dashed rgba(251,191,36,0.45);
+      align-self: center;
       position: relative;
     }
-    .leader-card.featured::after {
-      content: 'PROPRIETOR';
-      position: absolute; top: 2rem; right: 2rem;
-      background: var(--clr-yellow); color: #000;
-      font-size: 0.65rem; font-weight: 800;
-      padding: 0.25rem 0.75rem; border-radius: 4px; letter-spacing: 1px;
+    /* Arrow dots at each end of dashes */
+    .tier1-dash::before,
+    .tier1-dash::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(251,191,36,0.55);
     }
-    .leader-top { display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 2rem; }
-    .leader-photo-wrap {
-      width: 120px; height: 120px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      border: 1px dashed rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.3);
-      overflow: hidden; position: relative;
+    .tier1-dash::before { left: -2.5px; }
+    .tier1-dash::after  { right: -2.5px; }
+
+    /* ─── CONNECTOR SYSTEM ───────────────────────────── */
+    /*
+      All .conn divs are DIRECT children of .org-canvas (full canvas width).
+      Percentages below are computed from canvas width (≈1200px gross, ≈1136px net).
+
+      Tier 2 (max-width:620px, 2-col, gap:24px):
+        Card centers ≈ 36% and 64%
+
+      Tier 3 (full width, 4-col, gap:20px):
+        Card centers ≈ 12%, 37%, 63%, 88%
+
+      Tier 4 = same geometry as Tier 2: 36%, 64%
+    */
+    .conn {
+      position: relative;
+      width: 100%;
+      height: 60px;
     }
-    .leader-photo-wrap .photo-label {
-      position: absolute; bottom: 6px;
-      font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.3);
+    .conn-v {
+      position: absolute;
+      width: 3px;
+      background: #22c55e;
+      transform: translateX(-50%);
+      z-index: 2;
     }
-    .leader-info-main { flex: 1; padding-top: 0.25rem; }
-    .leader-info-main h4 { font-size: 1.75rem; color: var(--clr-yellow) !important; font-weight: 800; margin: 0 0 0.15rem; }
-    .leader-info-main .role { color: #4ade80 !important; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.75rem; }
-    .leader-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-    .meta-tag { font-size: 0.6rem; font-weight: 800; color: var(--clr-yellow) !important; text-transform: uppercase; letter-spacing: 1px; background: rgba(251,191,36,0.08); padding: 0.3rem 0.8rem; border-radius: 100px; border: 1px solid rgba(251,191,36,0.2); }
-    .leader-body { padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
-    .leader-desc { font-size: 0.9rem; line-height: 1.8; color: rgba(255,255,255,0.65) !important; }
-    .leader-desc p { margin-bottom: 1rem; color: rgba(255,255,255,0.65) !important; }
-    .leader-desc p:last-child { margin-bottom: 0; }
-    @media (max-width: 1100px) { .leader-grid { grid-template-columns: 1fr; } .leader-card.featured { grid-column: span 1; } }
-    @media (max-width: 700px) { .leader-top { flex-direction: column; } .leader-card { padding: 1.75rem; } }
+    .conn-h {
+      position: absolute;
+      height: 3px;
+      background: #22c55e;
+      z-index: 1;
+    }
+
+    /* ─── TIER CARD ROWS ─────────────────────────────── */
+    .tier2-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 620px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .tier3-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      width: 100%;
+    }
+    .tier4-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 620px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ─── MOBILE OVERRIDES ───────────────────────────── */
+    @media (max-width: 991px) {
+      .tier1-wrap { flex-direction: column; gap: 1rem; margin-top: 2rem; }
+      .tier1-dash { display: none; }
+      .tier1-side, .tier1-side.right-side { flex: unset; width: 100%; max-width: 340px; }
+      .tier1-center { flex: unset; width: 100%; max-width: 340px; }
+      .tier2-row, .tier4-row { grid-template-columns: 1fr; max-width: 340px; }
+      .tier3-row { grid-template-columns: 1fr 1fr; max-width: 680px; margin: 0 auto; }
+      .conn { display: none; }
+    }
+    @media (max-width: 576px) {
+      .tier3-row { grid-template-columns: 1fr; max-width: 340px; }
+    }
   </style>
-  <section class="leadership container reveal">
-    <div class="section-title">
-      <span style="color: var(--clr-yellow); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;">&#9655; Technical Operations Profile</span>
-      <h2 style="font-size: 3.5rem; margin-top: 0.75rem; color: white;">Our Leadership</h2>
-      <div style="width: 80px; height: 4px; background: var(--clr-yellow); margin: 1.5rem auto;"></div>
-    </div>
-    <div class="leader-grid">
-      <!-- MARK -->
-      <div class="leader-card featured">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">MARK PHOTO</span>
+  <section class="leadership reveal">
+    <div style="max-width:1240px;margin:0 auto;padding:0 2rem;box-sizing:border-box;">
+      <div class="section-title">
+        <span style="color:var(--clr-yellow);font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:0.75rem;">&#9655; Technical Operations Profile</span>
+        <h2 style="font-size:3.5rem;margin-top:0.75rem;color:white;">Organizational Structure</h2>
+        <div style="width:80px;height:4px;background:var(--clr-yellow);margin:1.5rem auto 0;"></div>
+        <div class="org-legend">
+          <div class="org-legend-item">
+            <div class="org-legend-line solid"></div>
+            <span class="org-legend-label">Direct Command</span>
           </div>
-          <div class="leader-info-main">
-            <h4>Mark</h4>
-            <span class="role">Founder & Operations Director</span>
-            <div class="leader-meta">
-              <span class="meta-tag">Client Relations</span>
-              <span class="meta-tag">Contracts & Quotations</span>
-              <span class="meta-tag">Documentation</span>
-              <span class="meta-tag">Logistics</span>
-              <span class="meta-tag">Organizational Alignment</span>
-              <span class="meta-tag">HIRAC</span>
-              <span class="meta-tag">Inspections</span>
-              <span class="meta-tag">Quality Control/ Assurance</span>
-              <span class="meta-tag">Approval</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>Leads the overall direction of the company, overseeing operations, project execution, and business management. Responsible for strategic planning, logistics, process improvement, and client relations while ensuring quality, efficiency, and consistency across all projects.</p>
-            <p>Support AutoCAD revisions, site markings, as-built plans, and ensures alignment between design and actual implementation. Also manages technical documentation, specifications, testing works, and compliance with codes and standard construction methodologies.</p>
-          </div>
-        </div>
-      </div>
-      <!-- ZANDRO -->
-      <div class="leader-card">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">ZANDRO PHOTO</span>
-          </div>
-          <div class="leader-info-main">
-            <h4>Zandro</h4>
-            <span class="role">Senior Project Manager</span>
-            <div class="leader-meta">
-              <span class="meta-tag">General Management and Support</span>
-              <span class="meta-tag">Facilities Management</span>
-              <span class="meta-tag">Technical Drawings</span>
-              <span class="meta-tag">Inspections</span>
-              <span class="meta-tag">Costing</span>
-              <span class="meta-tag">Codes and Standards</span>
-              <span class="meta-tag">Approval</span>
-              <span class="meta-tag">COSH</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>Manages end-to-end project planning and execution across plumbing, fire protection, and civil works. Ensures compliance with industry codes and standards while overseeing scheduling, BOQ preparation, manpower allocation, and project budgeting.</p>
-            <p>Produces accurate technical drawings using AutoCAD and SketchUp and handles technical documentation, specifications, testing, and standardized construction methodologies.</p>
-          </div>
-        </div>
-      </div>
-      <!-- GILMAR -->
-      <div class="leader-card">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">GILMAR PHOTO</span>
-          </div>
-          <div class="leader-info-main">
-            <h4>Gilmar</h4>
-            <span class="role">Senior Electrical Engineer</span>
-            <div class="leader-meta">
-              <span class="meta-tag">Licensed EE</span>
-              <span class="meta-tag">Inspections</span>
-              <span class="meta-tag">Costing</span>
-              <span class="meta-tag">Management</span>
-              <span class="meta-tag">Codes and Standards</span>
-              <span class="meta-tag">Approval</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>A licensed electrical engineer responsible for electrical system design, implementation, testing, and compliance with applicable codes and standards. Supports project execution through technical oversight, manpower coordination, and strict adherence to safety and quality requirements.</p>
-          </div>
-        </div>
-      </div>
-      <!-- PAUL -->
-      <div class="leader-card">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">PAUL PHOTO</span>
-          </div>
-          <div class="leader-info-main">
-            <h4>Paul</h4>
-            <span class="role">Lead Site Supervisor</span>
-            <div class="leader-meta">
-              <span class="meta-tag">Site Ops</span>
-              <span class="meta-tag">Plumbing and Firepro Specialist</span>
-              <span class="meta-tag">Approval</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>Supervises daily site operations, manpower coordination, and on-site execution of plumbing and fire protection works. Experienced in project estimation, planning, and field supervision, ensuring all activities are completed efficiently and according to specifications.</p>
-          </div>
-        </div>
-      </div>
-      <!-- JERIC -->
-      <div class="leader-card">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">JERIC PHOTO</span>
-          </div>
-          <div class="leader-info-main">
-            <h4>Jeric</h4>
-            <span class="role">Site Coordinator & Tech Lead</span>
-            <div class="leader-meta">
-              <span class="meta-tag">Ocular and Inspections</span>
-              <span class="meta-tag">Tech Lead</span>
-              <span class="meta-tag">Bill of Materials</span>
-              <span class="meta-tag">Labor Deployment</span>
-              <span class="meta-tag">Scheduling</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>Leads on-site teams and coordinates project requirements including materials, scheduling, costing, and execution. Ensures smooth daily operations and efficient workflow across all project activities.</p>
-          </div>
-        </div>
-      </div>
-      <!-- RUEL -->
-      <div class="leader-card">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">RUEL PHOTO</span>
-          </div>
-          <div class="leader-info-main">
-            <h4>Ruel</h4>
-            <span class="role">Electrician & Tech Lead</span>
-            <div class="leader-meta">
-              <span class="meta-tag">Multi-skilled</span>
-              <span class="meta-tag">Tech Lead & Support</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>A multi-skilled technician specializing in electrical works with broad experience in general technical operations. Provides essential manpower support and contributes across multiple areas of project execution.</p>
-          </div>
-        </div>
-      </div>
-      <!-- JAYSON -->
-      <div class="leader-card">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">JAYSON PHOTO</span>
-          </div>
-          <div class="leader-info-main">
-            <h4>Jayson</h4>
-            <span class="role">Data & Systems Analyst</span>
-            <div class="leader-meta">
-              <span class="meta-tag">AI / Systems</span>
-              <span class="meta-tag">Data</span>
-              <span class="meta-tag">Dashboards</span>
-              <span class="meta-tag">Automation</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>Handles data analysis, reporting, and system development. Manages and maintains the company website while leveraging tools such as Power BI and AI solutions to enhance operational efficiency and support data-driven decision-making.</p>
-          </div>
-        </div>
-      </div>
-      <!-- SIR IAN -->
-      <div class="leader-card">
-        <div class="leader-top">
-          <div class="leader-photo-wrap">
-            <i data-lucide="camera" size="32"></i>
-            <span class="photo-label">SIR IAN PHOTO</span>
-          </div>
-          <div class="leader-info-main">
-            <h4>Sir Ian</h4>
-            <span class="role">Business Consultant</span>
-            <div class="leader-meta">
-              <span class="meta-tag">Strategy</span>
-              <span class="meta-tag">Dev Advisor</span>
-            </div>
-          </div>
-        </div>
-        <div class="leader-body">
-          <div class="leader-desc">
-            <p>Provides expert guidance on business development, marketing strategies, and organizational growth. Supports the company through strategic planning, insights, and continuous operational improvement.</p>
+          <div class="org-legend-item">
+            <div class="org-legend-line dashed"></div>
+            <span class="org-legend-label">Strategic Advisory</span>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="org-canvas">
+
+      <!-- ══════════════════════════════════════════════
+           TIER 1 — Founder centered, advisors flanking
+           ══════════════════════════════════════════════ -->
+      <div class="tier1-wrap">
+
+        <!-- Left advisory: Owners & Clients -->
+        <div class="tier1-side">
+          <div class="org-node advisory">
+            <span class="org-badge">Stakeholders</span>
+            <div class="org-icon"><i data-lucide="handshake" size="22"></i></div>
+            <h4>Owners & Clients</h4>
+            <p>Developers, business owners, and partners whose vision and requirements drive every project forward.</p>
+            <div class="org-tags">
+              <span class="org-tag">Partnership</span>
+              <span class="org-tag">Collaboration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashed advisory connector (left) -->
+        <div class="tier1-dash"></div>
+
+        <!-- CENTER: Founder & Operations Director -->
+        <div class="tier1-center">
+          <div class="org-node featured">
+            <span class="org-badge">Proprietor</span>
+            <div class="org-icon"><i data-lucide="shield-check" size="22"></i></div>
+            <h4>Founder &amp; Operations Director</h4>
+            <p>Central authority for all strategic direction, project execution, quality control, contracts, and client relations.</p>
+            <div class="org-tags">
+              <span class="org-tag">Client Relations</span>
+              <span class="org-tag">Contracts</span>
+              <span class="org-tag">QA/QC</span>
+              <span class="org-tag">Approval</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashed advisory connector (right) -->
+        <div class="tier1-dash"></div>
+
+        <!-- Right advisories: Business Consultant + Data & Systems Analyst stacked -->
+        <div class="tier1-side right-side">
+          <div class="org-node advisory">
+            <span class="org-badge">Right Arm</span>
+            <div class="org-icon"><i data-lucide="trending-up" size="22"></i></div>
+            <h4>Business Consultant</h4>
+            <p>Strategic advisory for business growth, development, and organizational planning.</p>
+            <div class="org-tags">
+              <span class="org-tag">Strategy</span>
+              <span class="org-tag">Advisory</span>
+            </div>
+          </div>
+          <div class="org-node advisory">
+            <span class="org-badge">Right Arm</span>
+            <div class="org-icon"><i data-lucide="bar-chart-2" size="22"></i></div>
+            <h4>Data &amp; Systems Analyst</h4>
+            <p>Power BI dashboards, data tracking, AI systems, and web infrastructure management.</p>
+            <div class="org-tags">
+              <span class="org-tag">Power BI</span>
+              <span class="org-tag">Web Dev</span>
+              <span class="org-tag">Systems</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tier1-wrap -->
+
+
+      <!-- ══════════════════════════════════════════════
+           CONNECTOR: Tier 1 → Tier 2
+           Trunk drops from Founder center (50%).
+           Bridge spans 36%–64% (Tier 2 card centers).
+           ══════════════════════════════════════════════ -->
+      <div class="conn">
+        <div class="conn-v" style="left:50%;top:0;height:30px;"></div>
+        <div class="conn-h" style="left:36%;right:36%;top:29px;"></div>
+        <div class="conn-v" style="left:36%;top:29px;height:31px;"></div>
+        <div class="conn-v" style="left:64%;top:29px;height:31px;"></div>
+      </div>
+
+
+      <!-- ══════════════════════════════════════════════
+           TIER 2 — Direct reports to Founder
+           ══════════════════════════════════════════════ -->
+      <div class="tier2-row">
+
+        <div class="org-node">
+          <span class="org-badge">Project Operations</span>
+          <div class="org-icon"><i data-lucide="folder-git-2" size="22"></i></div>
+          <h4>Senior Project Manager</h4>
+          <p>End-to-end planning, scheduling, budgeting, and execution across plumbing, fire protection, and civil works. Coordinates CAD/SketchUp drawings and technical compliance.</p>
+          <div class="org-tags">
+            <span class="org-tag">Facilities</span>
+            <span class="org-tag">Costing</span>
+            <span class="org-tag">COSH</span>
+            <span class="org-tag">Drawings</span>
+          </div>
+        </div>
+
+        <div class="org-node">
+          <span class="org-badge">Engineering Design</span>
+          <div class="org-icon"><i data-lucide="cpu" size="22"></i></div>
+          <h4>Senior Electrical Engineer / Master Electrician</h4>
+          <p>Licensed Electrical Engineer overseeing design, testing, safety compliance, and implementation of all electrical systems and auxiliary services.</p>
+          <div class="org-tags">
+            <span class="org-tag">Licensed EE</span>
+            <span class="org-tag">Master Electrician</span>
+            <span class="org-tag">System Design</span>
+          </div>
+        </div>
+
+      </div><!-- /tier2-row -->
+
+
+      <!-- ══════════════════════════════════════════════
+           CONNECTOR: Tier 2 → Tier 3
+           Entry stubs at 36% and 64% (Tier 2 card centers).
+           Wide bridge spans 12%–88%.
+           Exit drops at 12%, 37%, 63%, 88% (Tier 3 card centers).
+           ══════════════════════════════════════════════ -->
+      <div class="conn">
+        <div class="conn-v" style="left:36%;top:0;height:30px;"></div>
+        <div class="conn-v" style="left:64%;top:0;height:30px;"></div>
+        <div class="conn-h" style="left:12%;right:12%;top:29px;"></div>
+        <div class="conn-v" style="left:12%;top:29px;height:31px;"></div>
+        <div class="conn-v" style="left:37%;top:29px;height:31px;"></div>
+        <div class="conn-v" style="left:63%;top:29px;height:31px;"></div>
+        <div class="conn-v" style="left:88%;top:29px;height:31px;"></div>
+      </div>
+
+
+      <!-- ══════════════════════════════════════════════
+           TIER 3 — Site execution & safety
+           ══════════════════════════════════════════════ -->
+      <div class="tier3-row">
+
+        <div class="org-node">
+          <span class="org-badge">Site Operations</span>
+          <div class="org-icon"><i data-lucide="users" size="22"></i></div>
+          <h4>Lead Site Supervisor</h4>
+          <p>Supervises daily field execution, manpower, and on-site assembly of plumbing and fire protection installations.</p>
+          <div class="org-tags">
+            <span class="org-tag">Site Ops</span>
+            <span class="org-tag">Plumbing</span>
+            <span class="org-tag">Firepro</span>
+          </div>
+        </div>
+
+        <div class="org-node">
+          <span class="org-badge">Technical Lead</span>
+          <div class="org-icon"><i data-lucide="droplet" size="22"></i></div>
+          <h4>Master Plumber</h4>
+          <p>Technical certification and guidance for plumbing, sanitary, and fire protection systems ensuring full code compliance.</p>
+          <div class="org-tags">
+            <span class="org-tag">Plumbing</span>
+            <span class="org-tag">Firepro</span>
+            <span class="org-tag">Sanitary</span>
+          </div>
+        </div>
+
+        <div class="org-node">
+          <span class="org-badge">Site Technical</span>
+          <div class="org-icon"><i data-lucide="clipboard-list" size="22"></i></div>
+          <h4>Site Coordinator &amp; Tech Lead</h4>
+          <p>Coordinates material logistics, labor deployment, ocular inspections, scheduling, and costing assessments on active projects.</p>
+          <div class="org-tags">
+            <span class="org-tag">Scheduling</span>
+            <span class="org-tag">Deployment</span>
+            <span class="org-tag">Costing</span>
+          </div>
+        </div>
+
+        <div class="org-node">
+          <span class="org-badge">Support &amp; Safety</span>
+          <div class="org-icon"><i data-lucide="shield" size="22"></i></div>
+          <h4>COSH Safety Officers</h4>
+          <p>Certified COSH officers ensuring compliance, risk management, and safe working conditions across all active project sites.</p>
+          <div class="org-tags">
+            <span class="org-tag">Safety Ops</span>
+            <span class="org-tag">COSH Certified</span>
+            <span class="org-tag">Compliance</span>
+          </div>
+        </div>
+
+      </div><!-- /tier3-row -->
+
+
+      <!-- ══════════════════════════════════════════════
+           CONNECTOR: Tier 3 → Tier 4
+           Entry stubs at 12%, 37%, 63%, 88% (Tier 3 card centers).
+           Wide bridge spans 12%–88%.
+           Exit drops at 36% and 64% (Tier 4 card centers).
+           ══════════════════════════════════════════════ -->
+      <div class="conn">
+        <div class="conn-v" style="left:12%;top:0;height:30px;"></div>
+        <div class="conn-v" style="left:37%;top:0;height:30px;"></div>
+        <div class="conn-v" style="left:63%;top:0;height:30px;"></div>
+        <div class="conn-v" style="left:88%;top:0;height:30px;"></div>
+        <div class="conn-h" style="left:12%;right:12%;top:29px;"></div>
+        <div class="conn-v" style="left:36%;top:29px;height:31px;"></div>
+        <div class="conn-v" style="left:64%;top:29px;height:31px;"></div>
+      </div>
+
+
+      <!-- ══════════════════════════════════════════════
+           TIER 4 — Field crew (NC Holders)
+           ══════════════════════════════════════════════ -->
+      <div class="tier4-row">
+
+        <div class="org-node">
+          <span class="org-badge">Field Crew</span>
+          <div class="org-icon"><i data-lucide="wrench" size="22"></i></div>
+          <h4>MEPFS Technicians</h4>
+          <p>Multi-skilled technicians specializing in Mechanical, Electrical, Plumbing, Fire Protection &amp; Sanitary installations. All certified NC holders.</p>
+          <div class="org-tags">
+            <span class="org-tag">NC Holders</span>
+            <span class="org-tag">MEPFS</span>
+            <span class="org-tag">Systems</span>
+          </div>
+        </div>
+
+        <div class="org-node">
+          <span class="org-badge">Field Crew</span>
+          <div class="org-icon"><i data-lucide="hammer" size="22"></i></div>
+          <h4>Civil Works &amp; Fit-Outs Technicians</h4>
+          <p>Certified technicians delivering civil masonry, structural works, architectural finishes &amp; interior fit-outs. All certified NC holders.</p>
+          <div class="org-tags">
+            <span class="org-tag">NC Holders</span>
+            <span class="org-tag">Civil Works</span>
+            <span class="org-tag">Fit-Outs</span>
+          </div>
+        </div>
+
+      </div><!-- /tier4-row -->
+
+    </div><!-- /org-canvas -->
   </section>
+
 
   <!-- CTA -->
   <section class="cta-banner">
